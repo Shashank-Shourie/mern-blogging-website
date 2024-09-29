@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 import { nanoid } from 'nanoid';
 import jwt from 'jsonwebtoken';
 import cors from 'cors';
+import admin from 'firebase-admin';
 
 import User from "./Schema/User.js";
 
@@ -107,6 +108,10 @@ server.post("/signin",(req,res)=>{
         console.log(err);
         return res.status(500).json({"error":err.message})
     })
+})
+
+server.post("/google-auth",async(req,res)=>{
+    let {access_token} = req.body;
 })
 
 server.listen(PORT,()=>{
