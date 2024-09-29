@@ -4,6 +4,7 @@ import 'dotenv/config';
 import bcrypt from 'bcrypt';
 import { nanoid } from 'nanoid';
 import jwt from 'jsonwebtoken';
+import cors from 'cors';
 
 import User from "./Schema/User.js";
 
@@ -13,7 +14,8 @@ let PORT=3000;
 let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; // regex for email
 let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/; // regex for password
 
-server.use(express.json())
+server.use(express.json());
+server.use(cors());
 
 mongoose.connect(process.env.DB_LOCATION,{
     autoIndex:true
@@ -41,19 +43,20 @@ const generateUsername = async (email) =>{
 
 server.post("/signup",(req,res)=>{
     let {fullname,email,password} = req.body;
+    console.log(fullname+email+password);
     //validating data
-    if(fullname.length<3){
-        return res.status(403).json({"error":"Fullname should be atleast 3 letters long"});
-    }
-    if(!email.length){
-        return res.status(403).json({"error":"Add email"});
-    }
-    if(!emailRegex.test(email)){
-        return res.status(403).json({"error":"Email invalid"});
-    }
-    if(!passwordRegex.test(password)){
-        return res.status(403).json({"error":"Password requirements not met"})
-    }
+    // if(fullname.length<3){
+    //     return res.status(403).json({"error":"Fullname should be atleast 3 letters long"});
+    // }
+    // if(!email.length){
+    //     return res.status(403).json({"error":"Add email"});
+    // }
+    // if(!emailRegex.test(email)){
+    //     return res.status(403).json({"error":"Email invalid"});
+    // }
+    // if(!passwordRegex.test(password)){
+    //     return res.status(403).json({"error":"Password requirements not met"})
+    // }
     bcrypt.hash(password,10,async (err,hashed_password)=>{
         let username = await generateUsername(email);
 
@@ -64,14 +67,15 @@ server.post("/signup",(req,res)=>{
         user.save().then((u)=>{
             return res.status(200).json(formatDatatoSend(u));
         })
-        .catch(err =>{
+        .catch(error =>{
 
-            if(err.code ==11000){
-                return res.status(500).json({"error":"Email already in use"});
+            if(error.code ==11000){
+                return res.status(400).json({"error":"Email already in use"});
             }
 
-            return res.status(500).json({"error":err.message})
+            return res.status(500).json({"error":error.message})
         })
+        // return res.status(500).json({"error":"something went wrong"});
     })
 
     // return res.status(200).json({"status":"ok"})
