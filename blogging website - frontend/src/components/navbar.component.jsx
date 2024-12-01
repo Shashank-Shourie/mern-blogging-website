@@ -44,7 +44,7 @@ const handleBlur = () => {
 
                     <Link to="/editor" className="hidden md:flex gap-2 link rounded-full">
                         <i className="fi fi-rr-file-edit text-2xl block mt-1"></i>
-                        <p>Write</p>
+                        <p className="mt-1">Write</p>
                     </Link>
 
                     {

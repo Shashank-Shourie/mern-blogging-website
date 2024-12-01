@@ -5,8 +5,11 @@ import {getAuth, GoogleAuthProvider, signInWithPopup} from "firebase/auth"
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
+
+const apiKey = import.meta.env.VITE_FIREBASE_API;
+
 const firebaseConfig = {
-  apiKey: "AIzaSyCuZRbwADAFelttMbzWhA11fuPWY3cZqxA",
+  apiKey: apiKey,
   authDomain: "react-js-blog-website-fe62b.firebaseapp.com",
   projectId: "react-js-blog-website-fe62b",
   storageBucket: "react-js-blog-website-fe62b.appspot.com",
