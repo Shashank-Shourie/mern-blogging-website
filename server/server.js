@@ -165,7 +165,11 @@ server.post("/google-auth",async(req,res)=>{
     .catch(err=>{
         return res.status(500).json({"error":"Failed to authenticate use another account"})
     })
-})
+});
+
+server.post("/create-blog",async(req,res)=>{
+    res.json(req.body);
+});
 
 server.listen(PORT,()=>{
     console.log(`Listening on port -> `+PORT);
